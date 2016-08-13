@@ -20,9 +20,20 @@ Ces démonstrateurs commentés montrent l’utilisation du SDK pour traiter les 
 
 Le dossier `lib` contient les ressources python et web pour faire fonctionner les démonstrateurs
 
-## Notes
+## Notes générales
 - il y a un problème d'utilisation du LeapMotion si la carte vidéo est à mémoire partagée (difficulté et lenteur pour récupérer les images des caméras)
 - il est important d'avoir un processeur suffisamment performant, car le traitement du signal peut nécessiter beaucoup de calculs
+
+## Notes pour MacOS
+
+MacOS utilise les bibliothèques `LeapPython.so` et `libLeap.dylib` dans le dossier `lib/x64/`.
+
+Afin d’utiliser le python de MacPorts (par exemple, si vous souhaitez installer `pillow` via pip) il est nécessaire de relier la bibliothèque LeapPython.so. Pour ce faire, en ciblant par exemple python2.7 : 
+
+```bash
+otool -L lib/x64/LeapPython.so
+install_name_tool -change /System/Library/Frameworks/Python.framework/Versions/2.7/Python /opt/local/Library/Frameworks/Python.framework/Versions/2.7/Python lib/x64/LeapPython.so
+```
 
 ## Licence
 
