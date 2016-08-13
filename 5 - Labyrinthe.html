@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<title>Labyrinthe</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="lib/leap-0.6.4.js"></script>
+		<script src="lib/leap-plugins-0.1.11.js"></script>
+	</head>
+	<body>
+		<h1>Suivi du pointeur</h1>
+		<table>
+			<tr><th>Frame</th><th>Coordonnées</th></tr>
+			<tr><td id="html_frame" width="250"></td><td id="html_coordonnées" width="450"></td></tr>
+		</table>
+		<hr />
+		<h1>Labyrinthe</h1>
+		<p id="html_informations">Buts : se déplacer sans toucher les lignes; atteindre la cible.</p>
+		<canvas id="html_canvas"></canvas>
+		<hr />
+
+		<script>
+			/* Fonctions */
+
+			/**
+			 * Affiche le bloc; aussi utilisé en callback
+			 * @param {bloc} bloc
+			 */
+			function afficheBloc(bloc) {
+				contextCanvas.fillStyle = bloc.couleur;
+				contextCanvas.fillRect(bloc.x, bloc.y, bloc.largeur, bloc.hauteur);
+			}
+			/**
+			 * Callback pour le test la collision entre un mur et le curseur
+			 * @param {bloc} mur le mur
+			 * @return {Boolean} vrai si collision, faux si non
+			 */
+			function collision(mur) {
+				// on regarde si le curseur ne se trouve pas en dehours du mur
+				return !((curseur.x > (mur.x + mur.largeur)) ||
+						((curseur.x + curseur.largeur) < mur.x) ||
+						(curseur.y > (mur.y + mur.hauteur)) ||
+						((curseur.y + curseur.hauteur) < mur.y));
+			}
+			/**
+			 * Affiche le vecteur de coordonnées 
+			 * @param {Array} vecteur de coordonnées XYZ
+			 * @return {String} vecteur textuel
+			 */
+			function vecteurToString(vecteur) {
+				return "(" + vecteur[0].toFixed() + ", " + vecteur[1].toFixed() + ", " + vecteur[2].toFixed() + ")";
+			}
+
+			/**
+			 * Actuallise l’affichage des informations de la frame
+			 * @param {Frame} frame la frame
+			 */
+			function actualiseInformationsFrame(frame) {
+				var texte = "<ul>";
+				texte += "<li>frame : " + frame.id + "</li>";
+				texte += "<li>horodatage : " + frame.timestamp + " µs</li>";
+				document.getElementById("html_frame").innerHTML = texte;
+			}
+			/**
+			 * Actuallise l’affichage des coorodnnées
+			 * @param {Array} coordonnéesMétriques vecteur des coordonnées métriques
+			 * @param {Array} coordonnéesWeb vecteur des coordonnées web
+			 * @param {Array} coordonnéesWebNormalisées vecteur des coordonnées web normalisées
+			 */
+			function actualiseCoordonnées(coordonnéesMétriques, coordonnéesWeb, coordonnéesWebNormalisées) {
+				var texte = "<ul>";
+				texte += "<li>coordonnées métriques : " + vecteurToString(coordonnéesMétriques) + "</li>";
+				texte += "<li>coordonnées web : (" + coordonnéesWeb.x.toFixed() + ", " + coordonnéesWeb.y.toFixed() + ")</li>";
+				texte += "<li>coordonnées normalisées de la zone de jeu : (" + coordonnéesWebNormalisées.x.toFixed() + ", " + coordonnéesWebNormalisées.y.toFixed() + ")</li>";
+				document.getElementById("html_coordonnées").innerHTML = texte;
+			}
+
+			/**
+			 * Callback pour traitement lors de la réception d’une frame venant du LeapMotion
+			 * @param {Frame} frame
+			 */
+			function traitementSurFrame(frame) {
+
+				/* traitement d’affichage pour chaque frame reçue */
+
+				// actualisation de l’affichage de l’horodatage
+				actualiseInformationsFrame(frame);
+
+				// nettoyage de la zone de jeu
+				contextCanvas.clearRect(0, 0, zoneJeu.largeur, zoneJeu.hauteur);
+
+				// affichage des murs et de la cible
+				murs.forEach(afficheBloc);
+				afficheBloc(cible);
+
+				// on ne n’agit que si l’on a au moins un pointeur
+				if (frame.pointables.length > 0) {
+
+					// on choisi comme pointeur le premier élément possible (doigt ou outil, main, bras, etc)
+					leapPointeur = frame.pointables[0];
+
+
+					/* calcul des coordonnées du curseur */
+
+					var coordonnéesMétriques = leapPointeur.stabilizedTipPosition;
+					// normalisation des coordonnées pour notre canvas web
+					var coordonnéesMétriquesNormalisées = frame.interactionBox.normalizePoint(coordonnéesMétriques, true);
+
+					// pas utile pour le jeu, mais permet de montrer les différences entre les systèmes de coordonnées
+					var coordonnéesWeb = {
+						x: coordonnéesMétriquesNormalisées[0] * window.innerWidth,
+						y: (1 - coordonnéesMétriquesNormalisées[1]) * window.innerHeight};
+
+					var coordonnéesWebNormalisées = {
+						x: coordonnéesMétriquesNormalisées[0] * zoneJeu.largeur,
+						y: (1 - coordonnéesMétriquesNormalisées[1]) * zoneJeu.hauteur};
+
+
+					/* positionnement du curseur */
+					curseur.x = parseInt(coordonnéesWebNormalisées.x.toFixed());
+					curseur.y = parseInt(coordonnéesWebNormalisées.y.toFixed());
+
+					// rattrapage des coordonnées pour ne pas dépasser de la zone de jeu
+					if ((curseur.x + curseur.largeur) >= zoneJeu.largeur)
+						curseur.x = zoneJeu.largeur - curseur.largeur;
+					if ((curseur.y + curseur.hauteur) >= zoneJeu.hauteur)
+						curseur.y = zoneJeu.hauteur - curseur.hauteur;
+
+
+					/* affichage */
+
+					// actualisation de l’affichage des coordonnées
+					actualiseCoordonnées(coordonnéesMétriques, coordonnéesWeb, coordonnéesWebNormalisées);
+
+					// affiche le curseur
+					afficheBloc(curseur);
+
+					// tests de collision
+					if (murs.some(collision)) {
+						var texte = "Perdu ! (horodatage : " + frame.timestamp + ")";
+						document.getElementById("html_informations").innerHTML = texte;
+					}
+					if (collision(cible)) {
+						var texte = "Dans la cible ! (" + frame.timestamp + ")";
+						document.getElementById("html_informations").innerHTML = texte;
+					}
+
+				} // fin if (frame.pointables.length > 0) {
+			}// fin function traitementSurFrame(frame) {
+
+
+			/*******************************************************************************************/
+
+
+			/* config */
+			var zoneJeu = {largeur: 800, hauteur: 600};
+
+			// les blocs
+			var curseur = {x: 100, y: 100, largeur: 20, hauteur: 20, couleur: "red"};
+
+			var murÉpaisseur = 50;
+			var murDroiteBas = {x: 300 + murÉpaisseur, y: 500, largeur: 300 + murÉpaisseur, hauteur: murÉpaisseur, couleur: "blue"};
+			var murDroiteHaut = {x: 500, y: 300, largeur: 200, hauteur: murÉpaisseur, couleur: "blue"};
+			var murMilieuGauche = {x: 300 + murÉpaisseur, y: 200, largeur: murÉpaisseur, hauteur: 300, couleur: "blue"};
+			var murMilieuDroit = {x: 500, y: 100, largeur: murÉpaisseur, hauteur: 200, couleur: "blue"};
+			var murGaucheBas = {x: 100, y: 200, largeur: 300, hauteur: murÉpaisseur, couleur: "blue"};
+			var murGaucheHaut = {x: 100, y: 100, largeur: 400, hauteur: murÉpaisseur, couleur: "blue"};
+			var murs = new Array(murDroiteBas, murDroiteHaut, murMilieuGauche, murMilieuDroit, murGaucheBas, murGaucheHaut);
+
+			var cible = {x: 100, y: 400, largeur: 100, hauteur: 100, couleur: "green"};
+
+
+			/* init canvas */
+			var html_canvas = document.getElementById("html_canvas");
+			html_canvas.width = zoneJeu.largeur;
+			html_canvas.height = zoneJeu.hauteur;
+			html_canvas.style.background = "yellow";
+			var contextCanvas = html_canvas.getContext('2d');
+
+
+			/* init LeapMotion */
+			var controleur = new Leap.Controller();
+
+			// on accepte de travailler si le navigateur web n’a pas le focus
+			controleur.setBackground(true);
+
+			// appel à la fonction lors d’une frame
+			controleur.on("frame", traitementSurFrame);
+
+			// activation du controlleur
+			controleur.connect();
+
+		</script>
+	</body>
+</html>

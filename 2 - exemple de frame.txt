@@ -1,0 +1,34 @@
+Frame id: 896852, timestamp : 25766656919, mains : 1, doigts : 5
+	Main droite, id 773, position: (-39.0772, 186.504, 26.9251)
+	Tangage : 26.130327°, roulis : -14.993082°, lacet : 5.139374°
+	Direction du bras : (-0.488024, 0.374135, -0.788579), position du poignet : (-35.3832, 166.573, 72.5945), position du coude : (84.9655, 74.31, 267.061)
+		doigt : pouce, id : 7730, longueur : 47.600452 mm, largeur : 18.495323 mm
+			os : métacarpe, début : (-63.1626, 163, 71.8356), fin : (-63.1626, 163, 71.8356), direction: (0, 0, 0)
+			os : proximale, début : (-63.1626, 163, 71.8356), fin : (-89.0235, 186.732, 42.7384), direction: (0.567222, -0.520531, 0.638206)
+			os : intermédiaire, début : (-89.0235, 186.732, 42.7384), fin : (-104.2, 201.645, 19.9993), direction: (0.487339, -0.478875, 0.730191)
+			os : distale, début : (-104.2, 201.645, 19.9993), fin : (-116.321, 212.77, 6.353), direction: (0.567068, -0.520454, 0.638406)
+		doigt : index, id : 7731, longueur : 53.711800 mm, largeur : 17.666733 mm
+			os : métacarpe, début : (-51.0973, 180.947, 70.8033), fin : (-58.9505, 203.795, 8.10219), direction: (0.116872, -0.340026, 0.933125)
+			os : proximale, début : (-58.9505, 203.795, 8.10219), fin : (-73.4341, 211.532, -27.5363), direction: (0.369107, -0.197193, 0.908226)
+			os : intermédiaire, début : (-73.4341, 211.532, -27.5363), fin : (-81.7782, 214.526, -47.7542), direction: (0.377971, -0.135618, 0.915831)
+			os : distale, début : (-81.7782, 214.526, -47.7542), fin : (-87.7657, 215.91, -62.0983), direction: (0.38369, -0.0886822, 0.919194)
+		doigt : majeur, id : 7732, longueur : 61.200283 mm, largeur : 17.351080 mm
+			os : métacarpe, début : (-40.0404, 180.722, 68.7601), fin : (-38.984, 200.655, 8.24446), direction: (-0.0165767, -0.312802, 0.949674)
+			os : proximale, début : (-38.984, 200.655, 8.24446), fin : (-37.7241, 212.531, -34.1283), direction: (-0.0286202, -0.269778, 0.962497)
+			os : intermédiaire, début : (-37.7241, 212.531, -34.1283), fin : (-37.5725, 218.152, -59.4848), direction: (-0.00583682, -0.216406, 0.976286)
+			os : distale, début : (-37.5725, 218.152, -59.4848), fin : (-37.7452, 221.22, -76.3712), direction: (0.0100615, -0.178736, 0.983846)
+		doigt : annulaire, id : 7733, longueur : 58.845707 mm, largeur : 16.510653 mm
+			os : métacarpe, début : (-29.389, 177.594, 67.1265), fin : (-20.1067, 193.215, 12.8767), direction: (-0.162243, -0.273043, 0.948222)
+			os : proximale, début : (-20.1067, 193.215, 12.8767), fin : (-8.41119, 202.608, -25.0745), direction: (-0.286599, -0.230164, 0.929992)
+			os : intermédiaire, début : (-8.41119, 202.608, -25.0745), fin : (-1.58117, 207.635, -48.9125), direction: (-0.269944, -0.198689, 0.942153)
+			os : distale, début : (-1.58117, 207.635, -48.9125), fin : (2.79043, 210.587, -65.1418), direction: (-0.256173, -0.172987, 0.951026)
+		doigt : auriculaire, id : 7734, longueur : 46.133945 mm, largeur : 14.666051 mm
+			os : métacarpe, début : (-20.62, 168.112, 65.6517), fin : (-4.51186, 182.242, 17.2192), direction: (-0.304153, -0.266804, 0.914498)
+			os : proximale, début : (-4.51186, 182.242, 17.2192), fin : (16.5942, 181.968, -7.22352), direction: (-0.653533, 0.00848569, 0.75685)
+			os : intermédiaire, début : (16.5942, 181.968, -7.22352), fin : (27.5271, 180.83, -21.3054), direction: (-0.612005, 0.0637103, 0.788283)
+			os : distale, début : (27.5271, 180.83, -21.3054), fin : (36.6182, 179.158, -34.0493), direction: (-0.577462, 0.106179, 0.809483)
+	Cercle id : 4, STATE_UPDATE, progression: 1.112786, rayon : 75.989174, progression d'angle : 9.335289°, sens horaire
+	Cercle id : 7, STATE_UPDATE, progression: 1.068772, rayon : 89.997993, progression d'angle : 9.626255°, sens horaire
+	Cercle id : 8, STATE_UPDATE, progression: 1.036798, rayon : 92.124298, progression d'angle : 9.907480°, sens horaire
+	Cercle id : 9, STATE_UPDATE, progression: 1.024802, rayon : 90.319069, progression d'angle : 9.658099°, sens horaire
+	Cercle id : 6, STATE_UPDATE, progression: 1.029571, rayon : 83.382332, progression d'angle : 8.394070°, sens horaire
