@@ -158,16 +158,16 @@ class MonListener(Leap.Listener):
 def main():
 
     # création du contrôleur
-    controller = Leap.Controller()
+    controleur = Leap.Controller()
     # on traite les frames même si l'application n'a pas le focus (nécessaire pour IDE, débogueur , etc)
-    controller.set_policy_flags(Leap.Controller.POLICY_BACKGROUND_FRAMES)
+    controleur.set_policy_flags(Leap.Controller.POLICY_BACKGROUND_FRAMES)
 
     # mise en place du listeneur qui traitera les frames
     listeneur = MonListener()
-    controller.add_listener(listeneur)
+    controleur.add_listener(listeneur)
 
     while (1):
-        listeneur.on_frame(controller)
+        listeneur.on_frame(controleur)
 
 if __name__ == "__main__":
 	main()

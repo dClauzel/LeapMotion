@@ -18,7 +18,7 @@ import time
 #################################################################################################
 
 
-class FocusListener(Leap.Listener):
+class MonListener(Leap.Listener):
 
 	# suivi du coup joué
 	coup = "vide"
@@ -78,7 +78,7 @@ class FocusListener(Leap.Listener):
 					self.compteur = 0
 
 
-#### fin class FocusListener
+#### fin class MonListener
 
 #################################################################################################
 
@@ -99,20 +99,21 @@ def typeDeCoup(nombreDeDoigts):
 #################################################################################################
 
 def main():
-	# Create a sample listener and controller
-	listener = FocusListener()
-	controller = Leap.Controller()
+	
+	# création du contrôleur et du listeneur
+	controleur = Leap.Controller()
+	listeneur = MonListener()
 	
 	# To get frames while your app isn't focused, you need to set the "background frames" policy
 	# https://developer.leapmotion.com/documentation/python/api/Leap.Controller.html#Leap.Controller.set_policy_flags
-	controller.set_policy_flags(Leap.Controller.POLICY_BACKGROUND_FRAMES)
+	controleur.set_policy_flags(Leap.Controller.POLICY_BACKGROUND_FRAMES)
 
-	controller.add_listener(listener)
+	controleur.add_listener(listeneur)
 
 	print "Press Enter to exit.." 
 	sys.stdin.readline()
 
-	controller.remove_listener(listener) 
+	controleur.remove_listener(listeneur) 
 
 if __name__ == "__main__":
 	main()
